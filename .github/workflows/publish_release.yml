@@ -1,0 +1,34 @@
+name: Publish GitHub Release
+
+on:
+  push:
+    tags:
+      - "V*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout package branch
+        uses: actions/checkout@v4
+        with:
+          ref: package
+
+      - name: Resolve package version
+        id: version
+        run: |
+          VERSION=$(sed -n 1p ./dev/version | sed 's/^v//')
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Create release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: ${{ github.ref_name }}
+          files: |
+            ./dev/luci-app-openclash_${{ steps.version.outputs.version }}_all.ipk
+            ./dev/luci-app-openclash-${{ steps.version.outputs.version }}.apk
+          generate_release_notes: true

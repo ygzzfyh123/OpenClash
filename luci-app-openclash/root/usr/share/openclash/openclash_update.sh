@@ -57,8 +57,9 @@ elif [ -x "/usr/bin/apk" ]; then
    OP_CV=$(apk list luci-app-openclash 2>/dev/null|grep 'installed' | grep -oE '[0-9]+(\.[0-9]+)*' | head -1 2>/dev/null)
 fi
 OP_LV=$(sed -n 1p "$LAST_OPVER" 2>/dev/null |sed "s/^v//g" |tr -d "\n")
-RELEASE_BRANCH=$(uci_get_config "release_branch" || echo "master")
+RELEASE_BRANCH=$(uci_get_config "release_branch" || echo "dev")
 github_address_mod=$(uci_get_config "github_address_mod" || echo 0)
+OPENCLASH_PACKAGE_REPO="ygzzfyh123/OpenClash"
 
 #一键更新
 if [ "$1" = "one_key_update" ]; then
@@ -85,27 +86,27 @@ if [ -n "$OP_CV" ] && [ -n "$OP_LV" ] && version_compare "$OP_CV" "$OP_LV" && [ 
    if [ "$github_address_mod" != "0" ]; then
       if [ "$github_address_mod" == "https://cdn.jsdelivr.net/" ] || [ "$github_address_mod" == "https://fastly.jsdelivr.net/" ] || [ "$github_address_mod" == "https://testingcf.jsdelivr.net/" ]; then
          if [ -x "/bin/opkg" ]; then
-            DOWNLOAD_URL="${github_address_mod}gh/vernesong/OpenClash@package/${RELEASE_BRANCH}/luci-app-openclash_${LAST_VER}_all.ipk"
+            DOWNLOAD_URL="${github_address_mod}gh/${OPENCLASH_PACKAGE_REPO}@package/${RELEASE_BRANCH}/luci-app-openclash_${LAST_VER}_all.ipk"
             DOWNLOAD_PATH="/tmp/openclash.ipk"
          elif [ -x "/usr/bin/apk" ]; then
-            DOWNLOAD_URL="${github_address_mod}gh/vernesong/OpenClash@package/${RELEASE_BRANCH}/luci-app-openclash-${LAST_VER}.apk"
+            DOWNLOAD_URL="${github_address_mod}gh/${OPENCLASH_PACKAGE_REPO}@package/${RELEASE_BRANCH}/luci-app-openclash-${LAST_VER}.apk"
             DOWNLOAD_PATH="/tmp/openclash.apk"
          fi
       else
          if [ -x "/bin/opkg" ]; then
-            DOWNLOAD_URL="${github_address_mod}https://raw.githubusercontent.com/vernesong/OpenClash/package/${RELEASE_BRANCH}/luci-app-openclash_${LAST_VER}_all.ipk"
+            DOWNLOAD_URL="${github_address_mod}https://raw.githubusercontent.com/${OPENCLASH_PACKAGE_REPO}/package/${RELEASE_BRANCH}/luci-app-openclash_${LAST_VER}_all.ipk"
             DOWNLOAD_PATH="/tmp/openclash.ipk"
          elif [ -x "/usr/bin/apk" ]; then
-            DOWNLOAD_URL="${github_address_mod}https://raw.githubusercontent.com/vernesong/OpenClash/package/${RELEASE_BRANCH}/luci-app-openclash-${LAST_VER}.apk"
+            DOWNLOAD_URL="${github_address_mod}https://raw.githubusercontent.com/${OPENCLASH_PACKAGE_REPO}/package/${RELEASE_BRANCH}/luci-app-openclash-${LAST_VER}.apk"
             DOWNLOAD_PATH="/tmp/openclash.apk"
          fi
       fi
    else
       if [ -x "/bin/opkg" ]; then
-         DOWNLOAD_URL="https://raw.githubusercontent.com/vernesong/OpenClash/package/${RELEASE_BRANCH}/luci-app-openclash_${LAST_VER}_all.ipk"
+         DOWNLOAD_URL="https://raw.githubusercontent.com/${OPENCLASH_PACKAGE_REPO}/package/${RELEASE_BRANCH}/luci-app-openclash_${LAST_VER}_all.ipk"
          DOWNLOAD_PATH="/tmp/openclash.ipk"
       elif [ -x "/usr/bin/apk" ]; then
-         DOWNLOAD_URL="https://raw.githubusercontent.com/vernesong/OpenClash/package/${RELEASE_BRANCH}/luci-app-openclash-${LAST_VER}.apk"
+         DOWNLOAD_URL="https://raw.githubusercontent.com/${OPENCLASH_PACKAGE_REPO}/package/${RELEASE_BRANCH}/luci-app-openclash-${LAST_VER}.apk"
          DOWNLOAD_PATH="/tmp/openclash.apk"
       fi
    fi

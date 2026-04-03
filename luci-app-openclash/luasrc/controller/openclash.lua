@@ -282,7 +282,7 @@ local function corever()
 end
 
 local function release_branch()
-	return fs.uci_get_config("config", "release_branch") or "master"
+	return fs.uci_get_config("config", "release_branch") or "dev"
 end
 
 local function smart_enable()

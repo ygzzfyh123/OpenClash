@@ -33,7 +33,8 @@ version_compare() {
 }
 
 DOWNLOAD_FILE="/tmp/openclash_last_version"
-RELEASE_BRANCH=$(uci_get_config "release_branch" || echo "master")
+RELEASE_BRANCH=$(uci_get_config "release_branch" || echo "dev")
+OPENCLASH_PACKAGE_REPO="ygzzfyh123/OpenClash"
 if [ -x "/bin/opkg" ]; then
    OP_CV=$(rm -f /var/lock/opkg.lock && opkg status luci-app-openclash 2>/dev/null |grep 'Version' |awk -F 'Version: ' '{print $2}' 2>/dev/null)
 elif [ -x "/usr/bin/apk" ]; then
@@ -47,12 +48,12 @@ fi
 
 if [ "$github_address_mod" != "0" ]; then
    if [ "$github_address_mod" == "https://cdn.jsdelivr.net/" ] || [ "$github_address_mod" == "https://fastly.jsdelivr.net/" ] || [ "$github_address_mod" == "https://testingcf.jsdelivr.net/" ]; then
-      DOWNLOAD_URL="${github_address_mod}gh/vernesong/OpenClash@package/${RELEASE_BRANCH}/version"
+      DOWNLOAD_URL="${github_address_mod}gh/${OPENCLASH_PACKAGE_REPO}@package/${RELEASE_BRANCH}/version"
    else
-      DOWNLOAD_URL="${github_address_mod}https://raw.githubusercontent.com/vernesong/OpenClash/package/${RELEASE_BRANCH}/version"
+      DOWNLOAD_URL="${github_address_mod}https://raw.githubusercontent.com/${OPENCLASH_PACKAGE_REPO}/package/${RELEASE_BRANCH}/version"
    fi
 else
-   DOWNLOAD_URL="https://raw.githubusercontent.com/vernesong/OpenClash/package/${RELEASE_BRANCH}/version"
+   DOWNLOAD_URL="https://raw.githubusercontent.com/${OPENCLASH_PACKAGE_REPO}/package/${RELEASE_BRANCH}/version"
 fi
 
 DOWNLOAD_FILE_CURL "$DOWNLOAD_URL" "$DOWNLOAD_FILE" "$DOWNLOAD_FILE"

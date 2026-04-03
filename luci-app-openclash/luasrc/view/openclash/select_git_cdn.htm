@@ -687,7 +687,7 @@
                     release_branch_cdn.value = status.release_branch;
                 }
                 else {
-                    release_branch_cdn.value = "master";
+                    release_branch_cdn.value = "dev";
                 }
                 if ( status.smart_enable && status.smart_enable != "" ) {
                 smart_enable_cdn.value = status.smart_enable;
@@ -698,7 +698,7 @@
             }
             else {
                 core_version_cdn.value = "0";
-                release_branch_cdn.value = "master";
+                release_branch_cdn.value = "dev";
                 smart_enable_cdn.value = "0";
             }
         });
